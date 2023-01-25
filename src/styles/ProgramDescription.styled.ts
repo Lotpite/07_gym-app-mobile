@@ -3,7 +3,7 @@ import { Col, Row } from "./Other.styled";
 
 export const ProgramDescriptionWrapper = styled(Col)`
   height: 100vh;
-  gap: 40px;
+  gap: 100px;
 `;
 
 export const ProgramAbout = styled(Col)`
