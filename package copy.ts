@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "homepage": "https://lotpite.github.io/07_gym-app/",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",

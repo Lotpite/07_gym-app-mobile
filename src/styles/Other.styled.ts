@@ -30,6 +30,13 @@ export const Text = styled.p<ITextProps>`
   color: ${({ active }) => (active ? "black" : "")};
 `;
 
+export const TextBold = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+  color: black;
+  float: left;
+`;
+
 export const SubText = styled.p`
   font-size: 12px;
   color: grey;
