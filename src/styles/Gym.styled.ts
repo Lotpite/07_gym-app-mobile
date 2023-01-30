@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { Col, Row } from "./Other.styled";
 
+interface ISetProps {
+  active: boolean;
+}
+
 export const GymContainer = styled(Col)`
   height: 100vh;
 `;
@@ -31,14 +35,16 @@ export const ExerciseImg = styled.div`
 
 export const Sets = styled(Row)``;
 
-export const Set = styled.div`
-  border: 2px solid #2babab;
+export const Set = styled.div<ISetProps>`
+  border: ${({ active }) =>
+    active ? "2px solid #2babab" : "2px solid lightgrey"};
   border-radius: 100%;
   width: 32px;
   height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${({ active }) => (active ? "black" : "lightgrey")};
 
   :hover {
     cursor: pointer;
