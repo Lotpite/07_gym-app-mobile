@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Col, Row } from "./Other.styled";
 
 interface ISetProps {
-  active: boolean;
+  active?: boolean;
 }
 
 export const GymContainer = styled(Col)`
@@ -29,11 +29,16 @@ export const ExerciseImg = styled.div`
   align-items: center;
 
   img {
-    width: 225px;
+    max-width: 225px;
+    max-height: 255px;
   }
 `;
 
 export const Sets = styled(Row)``;
+
+export const SetCool = styled(Row)`
+  justify-content: center;
+`;
 
 export const Set = styled.div<ISetProps>`
   border: ${({ active }) =>

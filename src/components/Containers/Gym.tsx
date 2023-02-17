@@ -1,25 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
-import { Changer, Count, Exercise, ExerciseImg, GymContainer, GymContent, Repeater, Set, Sets } from '../../styles/Gym.styled'
-import { Text, Title } from '../../styles/Other.styled'
+import { GymContainer, GymContent } from '../../styles/Gym.styled'
+import { Cooling } from '../Gym/Cooling'
+import { Finish } from '../Gym/Finish'
+import { NewSet } from '../Gym/Set'
 import { Button } from '../UI/Button'
-import { Icon } from '../UI/Icon'
 
 export const Gym = () => {
 
+  const lazyCount = (activeSet: number) => { 
+    let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
+    return newCount ? newCount.reps : 5
+  }
+
   const user = useSelector((state: RootState) => state.user)
   const currentProgram = user.gym.trainings[user.gym.trainings.length - 1]
-    // newCount && setCount(newCount.reps)
 
   const [isCooling, setIsCooling] = useState(false)
-  const [activeSet, setActiveSet] = useState(1)
-  const [activeExercise, setActiveExercise] = useState(0)
-
-  let newCount1 = currentProgram.exercises[activeExercise].sets.find( item => item.order == activeSet)
-  const [count, setCount] = useState(newCount1 ? newCount1.reps : 5)
+  const [isFinished, setIsFinished] = useState(false)
+  const [activeSet, setActiveSet] = useState(5)
+  const [activeExercise, setActiveExercise] = useState(2)
+  const [count, setCount] = useState<number>(() => lazyCount(activeSet))
   const [sets, setSets] = useState([{}])
+  const [disable, setDisable] = useState(false);
 
+  useEffect(() => {
+    console.log('cool', isCooling, 'fin', isFinished);
+    // console.log(sets);
+  }, [count, activeSet])
+
+  const setReps = (activeSet: number) => {
+    let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
+    newCount && setCount(newCount.reps) 
+  }
 
   const done = () => {
     let setToSave = {
@@ -41,7 +55,26 @@ export const Gym = () => {
       
       setSets(newSets)
     }
-    setActiveSet(activeSet + 1)
+
+    if(activeSet === currentProgram.exercises[activeExercise].sets.length) {
+      setActiveSet(1)
+      setReps(1)
+      setIsFinished(true)
+
+      if(activeExercise === currentProgram.exercises.length - 1) {
+        setActiveExercise(0)
+
+      } else setActiveExercise(activeExercise + 1)
+
+    } else {
+      setActiveSet(activeSet + 1)
+      setReps(activeSet+1)
+      setIsCooling(true)
+      setDisable(true)
+    }
+    
+    
+
     console.log('done');
   }
 
@@ -61,44 +94,41 @@ export const Gym = () => {
     
   }
 
-  useEffect(() => {
-    console.log(user);
-    console.log(sets);
-    
-  }, [count, activeSet])
+  const disableCooling = () => {
+    setIsCooling(false)
+  }
+
+  const activateButton = () => {
+    setDisable(false)
+  }
+
+  const finish = () => {
+    setIsFinished(true)
+  }
 
 
 
   return (
     <GymContainer>
         <GymContent>
-          <Exercise>
-            <ExerciseImg>
-              <Icon name={currentProgram.exercises[activeExercise].id}/>
-            </ExerciseImg>
-            <Title>
-              Push Up
-            </Title>
-          </Exercise>
-          <Sets>
-            <Text>Sets:</Text>
-            {currentProgram.exercises[activeExercise].sets.map(set => {
-              if(set.order <= activeSet) {
-                return (
-                  <Set key={set.order} active={true}><Text active={true}>{set.order}</Text></Set>
-                )
-              }
-              return (
-                <Set key={set.order} active={false}><Text active={false}>{set.order}</Text></Set>
-              )
-            })}
-          </Sets>
-          <Repeater>
-            <Changer onClick={() => change(-1)}>-</Changer>
-            <Count>{count}</Count>
-            <Changer onClick={() => change(1)}>+</Changer>
-          </Repeater>
-          <Button text='Done' func={done}/>
+          {
+            isFinished 
+            ? <Finish iconName='finish'
+            trainingsCount={user.gym.trainings.length}/>
+            : isCooling 
+            ? <Cooling iconName='cooling' func={activateButton}/>
+            : <NewSet exerciseName={currentProgram.exercises[activeExercise].id}
+            exercisesList={currentProgram.exercises[activeExercise].sets}
+            repsCount={count}
+            activeSet={activeSet}
+            func={change}
+            />
+        
+      }
+          {/* <Cooling iconName='cooling' func={change}/> */}
+          <Button text={isFinished ? 'Finish' : isCooling ? 'Continue' : 'Done'}
+           isDisabled={disable}
+            func={isCooling ? disableCooling : done}/>
         </GymContent>
     </GymContainer>
   )

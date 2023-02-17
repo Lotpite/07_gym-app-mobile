@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface IStyledButtonProps {
   color?: string;
   size?: string;
+  isDisabled?: boolean;
 }
 
 export const StyledButton = styled.div<IStyledButtonProps>`
@@ -15,6 +16,12 @@ export const StyledButton = styled.div<IStyledButtonProps>`
   color: white;
   font-weight: 700;
   border-radius: 15px;
+
+  ${({ isDisabled }) =>
+    isDisabled
+      ? `pointer-events: none;
+        background-color: grey;`
+      : ""}
 
   :hover {
     cursor: pointer;

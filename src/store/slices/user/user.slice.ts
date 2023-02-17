@@ -12,7 +12,7 @@ const initialState = {
             id: "pushup",
             total: 40,
             sets: [
-              { order: 1, activated: false, reps: 10 },
+              { order: 1, activated: false, reps: 11 },
               { order: 2, activated: false, reps: 12 },
               { order: 3, activated: false, reps: 13 },
               { order: 4, activated: false, reps: 5 },
@@ -53,7 +53,7 @@ const initialState = {
             id: "pushup",
             total: 40,
             sets: [
-              { order: 1, activated: false, reps: 10 },
+              { order: 1, activated: false, reps: 13 },
               { order: 2, activated: false, reps: 12 },
               { order: 3, activated: false, reps: 13 },
               { order: 4, activated: false, reps: 5 },

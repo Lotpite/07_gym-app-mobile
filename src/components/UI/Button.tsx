@@ -1,18 +1,19 @@
 import React, { FC } from 'react'
 import { StyledButton } from '../../styles/Button.styled'
-import { Text, Title } from '../../styles/Other.styled'
+import { Title } from '../../styles/Other.styled'
 
 interface IButtonProps {
     text: string,
     color?: string,
     size?: string,
+    isDisabled?: boolean,
     func: () => void
 }
 
-export const Button:FC<IButtonProps> = ({text, color, size, func}) => {
+export const Button:FC<IButtonProps> = ({text, color, size, isDisabled, func}) => {
     
   return (
-    <StyledButton color={color} size={size ? size : 'standard'} onClick={() => func()}>
+    <StyledButton color={color} isDisabled={isDisabled} size={size ? size : 'standard'} onClick={() => func()}>
         <Title >
             {text}
         </Title>
