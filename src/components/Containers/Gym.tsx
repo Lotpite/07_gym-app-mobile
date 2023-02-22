@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../hooks/redux'
+import { ISet } from '../../models/IGym'
 import { RootState } from '../../store/store'
 import { GymContainer, GymContent } from '../../styles/Gym.styled'
 import { Cooling } from '../Gym/Cooling'
@@ -15,56 +17,63 @@ export const Gym = () => {
   }
 
   const user = useSelector((state: RootState) => state.user)
+  const newTrain = useSelector((state: RootState) => state.train)
+  const dispatch = useAppDispatch();
+
   const currentProgram = user.gym.trainings[user.gym.trainings.length - 1]
 
   const [isCooling, setIsCooling] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
-  const [activeSet, setActiveSet] = useState(5)
-  const [activeExercise, setActiveExercise] = useState(2)
-  const [count, setCount] = useState<number>(() => lazyCount(activeSet))
-  const [sets, setSets] = useState([{}])
   const [disable, setDisable] = useState(false);
 
+  const [activeSet, setActiveSet] = useState(1)
+  const [activeExercise, setActiveExercise] = useState(0)
+  const [count, setCount] = useState<number>(() => lazyCount(activeSet))
+
+  const [newTraining, setNewTraining] = useState({})
+
   useEffect(() => {
-    console.log('cool', isCooling, 'fin', isFinished);
-    // console.log(sets);
+    console.log(newTrain);
+
   }, [count, activeSet])
 
   const setReps = (activeSet: number) => {
     let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
     newCount && setCount(newCount.reps) 
+  } 
+
+  const addExercise = (setObj: ISet) => {
+    let currentExercise = newTrain.exercises.find(item => item.id === currentProgram.exercises[activeExercise].id)
+    if(currentExercise) {
+      currentExercise.sets.push(setObj)
+    } else {
+      let newExercise = {
+        id: currentProgram.exercises[activeExercise].id,
+        total: 0,
+        sets: [
+          {order: activeSet, reps: count}
+        ],
+        active: false
+      }
+      newTrain.exercises.push(newExercise)
+    }
   }
 
   const done = () => {
-    let setToSave = {
-      order: activeSet,
-      reps: count
-    }
-
-    if(Object.keys(sets[0]).length === 0) {
-      let newSets = [
-        setToSave
-      ]
-      
-      setSets(newSets)
-    } else {
-      let newSets = [
-        ...sets,
-        setToSave
-      ]
-      
-      setSets(newSets)
-    }
 
     if(activeSet === currentProgram.exercises[activeExercise].sets.length) {
       setActiveSet(1)
       setReps(1)
-      setIsFinished(true)
 
       if(activeExercise === currentProgram.exercises.length - 1) {
         setActiveExercise(0)
+        setIsFinished(true)
 
-      } else setActiveExercise(activeExercise + 1)
+      } else {
+        setActiveExercise(activeExercise + 1)
+        setIsCooling(true)
+        setDisable(true)
+      }
 
     } else {
       setActiveSet(activeSet + 1)
@@ -72,8 +81,6 @@ export const Gym = () => {
       setIsCooling(true)
       setDisable(true)
     }
-    
-    
 
     console.log('done');
   }
@@ -103,9 +110,8 @@ export const Gym = () => {
   }
 
   const finish = () => {
-    setIsFinished(true)
+    setIsFinished(false)
   }
-
 
 
   return (

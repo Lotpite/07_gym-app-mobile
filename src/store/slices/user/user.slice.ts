@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   name: "Andrew",
@@ -94,9 +94,23 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    addTrains: (state, action: PayloadAction<any>) => {
+      console.log("reducer add training", action.payload);
+      //! Should not be ANY
+      state: state.gym.trainings.unshift(action.payload);
+    },
+    addExercise: (state, action: PayloadAction<any>) => {
+      console.log("reducer add exercise", action.payload);
+      let newEx = state.gym.trainings[0].exercises.find(
+        (item) => item.id === action.payload.id
+      );
+      newEx?.sets.push(action.payload.set);
+      state: newEx && state.gym.trainings[0].exercises.push(newEx);
+    },
+  },
 });
 
-export const {} = userSlice.actions;
+export const { addTrains, addExercise } = userSlice.actions;
 
 export default userSlice.reducer;
