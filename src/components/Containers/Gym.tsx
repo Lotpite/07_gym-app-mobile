@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/redux'
-import { ISet } from '../../models/IGym'
+import { IExercise, ISet, ITraining } from '../../models/IGym'
+import { addExs, addSetToExs } from '../../store/slices/train/train.slice'
 import { RootState } from '../../store/store'
 import { GymContainer, GymContent } from '../../styles/Gym.styled'
 import { Cooling } from '../Gym/Cooling'
@@ -17,7 +18,7 @@ export const Gym = () => {
   }
 
   const user = useSelector((state: RootState) => state.user)
-  const newTrain = useSelector((state: RootState) => state.train)
+  const newTrain: ITraining = useSelector((state: RootState) => state.train)
   const dispatch = useAppDispatch();
 
   const currentProgram = user.gym.trainings[user.gym.trainings.length - 1]
@@ -42,10 +43,15 @@ export const Gym = () => {
     newCount && setCount(newCount.reps) 
   } 
 
-  const addExercise = (setObj: ISet) => {
+  const addExercise = () => {
     let currentExercise = newTrain.exercises.find(item => item.id === currentProgram.exercises[activeExercise].id)
+    
     if(currentExercise) {
-      currentExercise.sets.push(setObj)
+      dispatch(addSetToExs({
+        exsId: activeExercise, 
+        order: activeSet, 
+        reps: count,
+      }))
     } else {
       let newExercise = {
         id: currentProgram.exercises[activeExercise].id,
@@ -55,7 +61,8 @@ export const Gym = () => {
         ],
         active: false
       }
-      newTrain.exercises.push(newExercise)
+      // newTrain.exercises.push(newExercise)
+      dispatch(addExs(newExercise))
     }
   }
 
@@ -82,6 +89,7 @@ export const Gym = () => {
       setDisable(true)
     }
 
+    addExercise()
     console.log('done');
   }
 

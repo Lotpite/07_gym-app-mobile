@@ -1,42 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IExercise, ISet, ISetPayload, ITraining } from "../../../models/IGym";
 
-const initialState = {
-  id: "1673647200000",
+const initialState: ITraining = {
+  id: "",
   exercises: [
     {
-      id: "pushup",
-      total: 40,
-      sets: [
-        { order: 1, reps: 13 },
-        { order: 2, reps: 12 },
-        { order: 3, reps: 13 },
-        { order: 4, reps: 5 },
-        { order: 5, reps: 0 },
-      ],
-      active: false,
-    },
-    {
-      id: "squats",
-      total: 24,
-      sets: [
-        { order: 1, reps: 10 },
-        { order: 2, reps: 10 },
-        { order: 3, reps: 4 },
-        { order: 4, reps: 0 },
-        { order: 5, reps: 0 },
-      ],
-      active: false,
-    },
-    {
-      id: "crunches",
-      total: 66,
-      sets: [
-        { order: 1, reps: 9 },
-        { order: 2, reps: 11 },
-        { order: 3, reps: 20 },
-        { order: 4, reps: 15 },
-        { order: 5, reps: 11 },
-      ],
+      id: "",
+      total: 0,
+      sets: [],
       active: false,
     },
   ],
@@ -45,9 +16,26 @@ const initialState = {
 const trainSlice = createSlice({
   name: "train",
   initialState,
-  reducers: {},
+  reducers: {
+    addExs: (state, action: PayloadAction<IExercise>) => {
+      if (state.exercises[0].id === "") {
+        return {
+          ...state,
+          exercises: [action.payload],
+        };
+      } else {
+        state: state.exercises.push(action.payload);
+      }
+    },
+    addSetToExs: (state, action: PayloadAction<ISetPayload>) => {
+      debugger;
+      state: state.exercises[action.payload.exsId].sets.push({
+        order: action.payload.order,
+        reps: action.payload.reps,
+      });
+    },
+  },
 });
 
-export const {} = trainSlice.actions;
-
+export const { addExs, addSetToExs } = trainSlice.actions;
 export default trainSlice.reducer;
