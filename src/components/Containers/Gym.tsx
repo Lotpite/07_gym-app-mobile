@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/redux'
 import { IExercise, ISet, ITraining } from '../../models/IGym'
-import { addExs, addSetToExs } from '../../store/slices/train/train.slice'
+import { addDate, addExs, addSetToExs } from '../../store/slices/train/train.slice'
 import { RootState } from '../../store/store'
 import { GymContainer, GymContent } from '../../styles/Gym.styled'
 import { Cooling } from '../Gym/Cooling'
@@ -27,8 +27,8 @@ export const Gym = () => {
   const [isFinished, setIsFinished] = useState(false)
   const [disable, setDisable] = useState(false);
 
-  const [activeSet, setActiveSet] = useState(1)
-  const [activeExercise, setActiveExercise] = useState(0)
+  const [activeSet, setActiveSet] = useState(5)
+  const [activeExercise, setActiveExercise] = useState(2)
   const [count, setCount] = useState<number>(() => lazyCount(activeSet))
 
   const [newTraining, setNewTraining] = useState({})
@@ -36,7 +36,7 @@ export const Gym = () => {
   useEffect(() => {
     console.log(newTrain);
 
-  }, [count, activeSet])
+  }, [count, activeSet, isFinished])
 
   const setReps = (activeSet: number) => {
     let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
@@ -55,7 +55,7 @@ export const Gym = () => {
     } else {
       let newExercise = {
         id: currentProgram.exercises[activeExercise].id,
-        total: 0,
+        total: count,
         sets: [
           {order: activeSet, reps: count}
         ],
@@ -73,6 +73,8 @@ export const Gym = () => {
       setReps(1)
 
       if(activeExercise === currentProgram.exercises.length - 1) {
+        let date = new Date().toLocaleDateString()
+        dispatch(addDate(date))
         setActiveExercise(0)
         setIsFinished(true)
 
@@ -118,9 +120,13 @@ export const Gym = () => {
   }
 
   const finish = () => {
+    
     setIsFinished(false)
   }
 
+//! Need to realize function finnish for finnish button
+//! Need to realize function finnish for finnish button
+//! Need to realize function finnish for finnish button
 
   return (
     <GymContainer>
@@ -138,11 +144,11 @@ export const Gym = () => {
             func={change}
             />
         
-      }
-          {/* <Cooling iconName='cooling' func={change}/> */}
+          }
+
           <Button text={isFinished ? 'Finish' : isCooling ? 'Continue' : 'Done'}
            isDisabled={disable}
-            func={isCooling ? disableCooling : done}/>
+            func={isFinished ? finish : isCooling ? disableCooling : done}/>
         </GymContent>
     </GymContainer>
   )

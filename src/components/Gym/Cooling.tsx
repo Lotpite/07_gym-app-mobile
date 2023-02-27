@@ -10,7 +10,7 @@ interface ICoolingProps {
 
 export const Cooling:FC<ICoolingProps> = ({iconName, func}) => {
 
-    const [time, setTime] = useState(3)
+    const [time, setTime] = useState(1)
 
     useEffect(() => {
         let timer = setTimeout(()=> {

@@ -28,14 +28,18 @@ const trainSlice = createSlice({
       }
     },
     addSetToExs: (state, action: PayloadAction<ISetPayload>) => {
-      debugger;
+      // debugger;
       state: state.exercises[action.payload.exsId].sets.push({
         order: action.payload.order,
         reps: action.payload.reps,
       });
+      state: state.exercises[action.payload.exsId].total += action.payload.reps;
+    },
+    addDate: (state, action: PayloadAction<string>) => {
+      state.id = action.payload;
     },
   },
 });
 
-export const { addExs, addSetToExs } = trainSlice.actions;
+export const { addExs, addSetToExs, addDate } = trainSlice.actions;
 export default trainSlice.reducer;
