@@ -8,9 +8,12 @@ import { GymContainer, GymContent } from '../../styles/Gym.styled'
 import { Cooling } from '../Gym/Cooling'
 import { Finish } from '../Gym/Finish'
 import { NewSet } from '../Gym/Set'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '../UI/Button'
 
 export const Gym = () => {
+
+  const navigate = useNavigate();
 
   const lazyCount = (activeSet: number) => { 
     let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
@@ -27,8 +30,8 @@ export const Gym = () => {
   const [isFinished, setIsFinished] = useState(false)
   const [disable, setDisable] = useState(false);
 
-  const [activeSet, setActiveSet] = useState(5)
-  const [activeExercise, setActiveExercise] = useState(2)
+  const [activeSet, setActiveSet] = useState(4)
+  const [activeExercise, setActiveExercise] = useState(0)
   const [count, setCount] = useState<number>(() => lazyCount(activeSet))
 
   const [newTraining, setNewTraining] = useState({})
@@ -120,8 +123,8 @@ export const Gym = () => {
   }
 
   const finish = () => {
-    
     setIsFinished(false)
+    navigate('/home')
   }
 
 //! Need to realize function finnish for finnish button

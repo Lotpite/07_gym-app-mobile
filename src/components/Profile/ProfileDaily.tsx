@@ -1,35 +1,25 @@
-import React from 'react'
-import { Col, Text } from '../../styles/Other.styled'
+import React, {FC} from 'react'
+import { Text } from '../../styles/Other.styled'
 import { DailyState, DailyWrapper } from '../../styles/ProfileDaily.styled'
 import { ProgressCircle } from '../UI/ProgressCircle'
+import { ITraining } from '../../models/IGym'
 
-export const ProfileDaily = () => {
+interface IProfileDaily {
+  todaysWorkout: ITraining
+}
+
+export const ProfileDaily:FC<IProfileDaily> = ({todaysWorkout}) => {
   return (
     <DailyWrapper>
-        <DailyState>
-          <ProgressCircle progressValue={10} iconName='pushup'/>
-          <Text>
-            10%
-          </Text>
-        </DailyState>
-        <DailyState>
-          <ProgressCircle progressValue={20} iconName='crunches'/>
-          <Text>
-            20%
-          </Text>
-        </DailyState>
-        <DailyState>
-          <ProgressCircle progressValue={50} iconName='squats'/>
-          <Text>
-            50%
-          </Text>
-        </DailyState>
-        <DailyState>
-          <ProgressCircle progressValue={100} iconName='march'/>
-          <Text>
-            100%
-          </Text>
-        </DailyState>
+        
+          {todaysWorkout.exercises.map(exercise => {
+            return (
+              <DailyState key={exercise.id}>
+                <ProgressCircle progressValue={exercise.total} iconName={exercise.id}/>
+                <Text>{exercise.total}%</Text>
+              </DailyState>
+            )
+          })}
     </DailyWrapper>
   )
 }

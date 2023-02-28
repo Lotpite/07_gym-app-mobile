@@ -16,7 +16,6 @@ export interface IExercise {
     order: number;
     reps: number;
   }[];
-  active: boolean;
 }
 
 export interface ITraining {
@@ -28,6 +27,5 @@ export interface ITraining {
       order: number;
       reps: number;
     }[];
-    active: boolean;
   }[];
 }

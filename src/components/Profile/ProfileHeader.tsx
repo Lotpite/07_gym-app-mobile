@@ -3,7 +3,11 @@ import { Row, SubText, Title } from '../../styles/Other.styled'
 import { Avatar, Level, HeaderWrapper, Rank, RankLabel, UserName } from '../../styles/Profile.styled'
 import { Icon } from '../UI/Icon'
 
-export const ProfileHeader:FC = () => {
+interface IProfileHeader {
+  workoutsQty: number
+}
+
+export const ProfileHeader:FC<IProfileHeader> = ({workoutsQty}) => {
   return (
     <HeaderWrapper>
           <Row>
@@ -28,7 +32,7 @@ export const ProfileHeader:FC = () => {
 
             <Level>
               <Title>
-                  16
+                  {workoutsQty}
               </Title>
               <SubText>
                 workouts

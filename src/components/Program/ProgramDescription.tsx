@@ -4,15 +4,18 @@ import { ProgramAbout, ProgramAboutItem, ProgramDescriptionWrapper, ProgramNavig
 import { Program } from '../../styles/ProgramSelection.styled'
 import { Button } from '../UI/Button'
 import { Icon } from '../UI/Icon'
+import { useNavigate } from 'react-router-dom'
 
 export const ProgramDescription = () => {
 
+  const navigate = useNavigate()
+
   const back = () => {
-    console.log('back');
+    navigate('/programs')
   }
 
   const start = () => {
-    console.log('back');
+    navigate('/gym')
   }
   return (
     <ProgramDescriptionWrapper>

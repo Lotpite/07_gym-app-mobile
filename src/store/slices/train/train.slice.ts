@@ -8,7 +8,6 @@ const initialState: ITraining = {
       id: "",
       total: 0,
       sets: [],
-      active: false,
     },
   ],
 };
@@ -19,7 +18,7 @@ const trainSlice = createSlice({
   reducers: {
     addExs: (state, action: PayloadAction<IExercise>) => {
       if (state.exercises[0].id === "") {
-        return {
+        state: return {
           ...state,
           exercises: [action.payload],
         };
@@ -29,6 +28,7 @@ const trainSlice = createSlice({
     },
     addSetToExs: (state, action: PayloadAction<ISetPayload>) => {
       // debugger;
+      console.log(state);
       state: state.exercises[action.payload.exsId].sets.push({
         order: action.payload.order,
         reps: action.payload.reps,
