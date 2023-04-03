@@ -7,7 +7,6 @@ interface ISetProps {
   exerciseName: string,
   exercisesList: {
             order: number;
-            activated: boolean;
             reps: number;
         }[],
   repsCount: number,

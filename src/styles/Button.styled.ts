@@ -15,12 +15,23 @@ export const StyledButton = styled.div<IStyledButtonProps>`
   align-items: center;
   color: white;
   font-weight: 700;
-  border-radius: 15px;
+  border-radius: 10px;
 
   ${({ isDisabled }) =>
     isDisabled
       ? `pointer-events: none;
         background-color: grey;`
+      : ""}
+
+  ${({ size }) =>
+    size === "small"
+      ? `
+          height: 40px; 
+          
+          p {
+            font-size: 18px; 
+          }
+        `
       : ""}
 
   :hover {

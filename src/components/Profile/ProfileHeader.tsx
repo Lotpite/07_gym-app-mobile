@@ -13,7 +13,7 @@ export const ProfileHeader:FC<IProfileHeader> = ({workoutsQty}) => {
           <Row>
             <Level>
               <Title>
-                  34
+                  1
               </Title>
               <SubText>
                 level

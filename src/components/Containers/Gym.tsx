@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/redux'
-import { IExercise, ISet, ITraining } from '../../models/IGym'
+import { ITraining } from '../../models/IGym'
 import { addDate, addExs, addSetToExs } from '../../store/slices/train/train.slice'
 import { RootState } from '../../store/store'
 import { GymContainer, GymContent } from '../../styles/Gym.styled'
@@ -30,16 +30,14 @@ export const Gym = () => {
   const [isFinished, setIsFinished] = useState(false)
   const [disable, setDisable] = useState(false);
 
-  const [activeSet, setActiveSet] = useState(4)
+  const [activeSet, setActiveSet] = useState(1)
   const [activeExercise, setActiveExercise] = useState(0)
   const [count, setCount] = useState<number>(() => lazyCount(activeSet))
-
-  const [newTraining, setNewTraining] = useState({})
 
   useEffect(() => {
     console.log(newTrain);
 
-  }, [count, activeSet, isFinished])
+  }, [count, activeSet, isFinished, newTrain])
 
   const setReps = (activeSet: number) => {
     let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
@@ -137,21 +135,21 @@ export const Gym = () => {
           {
             isFinished 
             ? <Finish iconName='finish'
-            trainingsCount={user.gym.trainings.length}/>
+                      trainingsCount={user.gym.trainings.length}/>
             : isCooling 
             ? <Cooling iconName='cooling' func={activateButton}/>
             : <NewSet exerciseName={currentProgram.exercises[activeExercise].id}
-            exercisesList={currentProgram.exercises[activeExercise].sets}
-            repsCount={count}
-            activeSet={activeSet}
-            func={change}
+                      exercisesList={currentProgram.exercises[activeExercise].sets}
+                      repsCount={count}
+                      activeSet={activeSet}
+                      func={change}
             />
         
           }
 
           <Button text={isFinished ? 'Finish' : isCooling ? 'Continue' : 'Done'}
-           isDisabled={disable}
-            func={isFinished ? finish : isCooling ? disableCooling : done}/>
+                  isDisabled={disable}
+                  func={isFinished ? finish : isCooling ? disableCooling : done}/>
         </GymContent>
     </GymContainer>
   )

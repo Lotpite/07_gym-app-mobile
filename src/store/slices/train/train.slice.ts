@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IExercise, ISet, ISetPayload, ITraining } from "../../../models/IGym";
+import { IExercise, ISetPayload, ITraining } from "../../../models/IGym";
 
 const initialState: ITraining = {
   id: "",
@@ -18,22 +18,18 @@ const trainSlice = createSlice({
   reducers: {
     addExs: (state, action: PayloadAction<IExercise>) => {
       if (state.exercises[0].id === "") {
-        state: return {
-          ...state,
-          exercises: [action.payload],
-        };
+        state.exercises = [action.payload];
       } else {
-        state: state.exercises.push(action.payload);
+        state.exercises.push(action.payload);
       }
     },
     addSetToExs: (state, action: PayloadAction<ISetPayload>) => {
       // debugger;
-      console.log(state);
-      state: state.exercises[action.payload.exsId].sets.push({
+      state.exercises[action.payload.exsId].sets.push({
         order: action.payload.order,
         reps: action.payload.reps,
       });
-      state: state.exercises[action.payload.exsId].total += action.payload.reps;
+      state.exercises[action.payload.exsId].total += action.payload.reps;
     },
     addDate: (state, action: PayloadAction<string>) => {
       state.id = action.payload;

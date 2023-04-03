@@ -13,6 +13,7 @@ export const Icon:FC<IconProps> = ({name, text}) => {
     <>
         <div>
             <img src={`${BASE_URL}${name}.png`} alt={text}/>
+            
         </div>
         {text ? <div>{text}</div> : <></>}
     </>

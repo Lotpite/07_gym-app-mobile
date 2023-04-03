@@ -11,7 +11,6 @@ interface IProfileDaily {
 export const ProfileDaily:FC<IProfileDaily> = ({todaysWorkout}) => {
   return (
     <DailyWrapper>
-        
           {todaysWorkout.exercises.map(exercise => {
             return (
               <DailyState key={exercise.id}>

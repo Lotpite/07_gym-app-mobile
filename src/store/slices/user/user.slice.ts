@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IUser } from "../../../models/IUser";
 
-const initialState = {
+const initialState1 = {
   name: "Andrew",
   email: "Email@email.com",
   gym: {
@@ -88,6 +89,14 @@ const initialState = {
         ],
       },
     ],
+  },
+};
+const initialState: IUser = {
+  email: "",
+  id: "",
+  password: "",
+  gym: {
+    trainings: [],
   },
 };
 
