@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../hooks/redux'
-import { fetchUser } from '../../store/slices/auth/auth'
+import { createUser, fetchUser } from '../../store/slices/auth/auth'
 import { ButtonContainer, LoginForm, LoginInput, LoginWrapper, SubmitButton } from '../../styles/Login'
 import { Button } from '../UI/Button'
 import { Title } from '../../styles/Other.styled'
@@ -9,6 +9,7 @@ export const Login = () => {
 
   const dispatch = useAppDispatch()
   const [registration, setRegistration] = useState(false)
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
@@ -18,20 +19,28 @@ export const Login = () => {
   }, [])
 
   const clearInputs = () => {
+    setName('')
     setEmail('')
     setPassword('')
     setPassword2('')
   }
 
+
+  //! SOLID or NOT SOLID ?
+  
   const logIn = () => {
     dispatch(fetchUser({email, password}))
     clearInputs()
   }
 
   const signIn = () => {
-    password === password2
-    ? clearInputs()
-    : alert('Password does not match')
+    if(password === password2) {
+      clearInputs()
+      dispatch(createUser({name, email, password}))
+      setRegistration(false)
+    } else {
+       alert('Password does not match')
+    }
   }
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,6 +54,9 @@ export const Login = () => {
     <LoginWrapper>
       <LoginForm onSubmit={submitForm}>
         <Title>{registration ? 'Registration' : 'Login'}</Title>
+        {registration 
+        ? <LoginInput type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} autoComplete='on'/>
+        : <></>}
         <LoginInput type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} autoComplete='on'/>
         <LoginInput type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} autoComplete='on'/>
         {registration 
@@ -59,4 +71,3 @@ export const Login = () => {
     </LoginWrapper>
   )
 }
-//!!! Check if exist trainings only if choose program (if no - then create, if yes - continue)

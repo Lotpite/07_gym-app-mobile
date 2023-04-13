@@ -33,10 +33,12 @@ export const NewSet:FC<ISetProps> = ({exerciseName, exercisesList,repsCount,acti
                 return (
                   <Set key={set.order} active={true}><Text active={true}>{set.order}</Text></Set>
                 )
+              } else {
+                return (
+                  <Set key={set.order} active={false}><Text active={false}>{set.order}</Text></Set>
+                )
               }
-              return (
-                <Set key={set.order} active={false}><Text active={false}>{set.order}</Text></Set>
-              )
+              
             })}
           </Sets>
           <Repeater>

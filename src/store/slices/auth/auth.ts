@@ -8,12 +8,18 @@ interface AuthState {
   error: null | string | undefined;
 }
 
-interface Credentials {
+interface LoginCredentials {
   email: string;
   password: string;
 }
 
-export const fetchUser = createAsyncThunk<IUser, Credentials>(
+interface RegistrationCredentials {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export const fetchUser = createAsyncThunk<IUser, LoginCredentials>(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
@@ -30,9 +36,27 @@ export const fetchUser = createAsyncThunk<IUser, Credentials>(
   }
 );
 
+export const createUser = createAsyncThunk<IUser, RegistrationCredentials>(
+  "auth/registration",
+  async ({ name, email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/registration`,
+        { name, email, password }
+      );
+      return response.data;
+    } catch (error: any) {
+      return error.message
+        ? rejectWithValue(error.message)
+        : rejectWithValue({ message: "Undefined error occurs" });
+    }
+  }
+);
+
 const initialState: AuthState = {
   user: {
     email: "",
+    name: "",
     id: "",
     password: "",
     gym: {
@@ -56,6 +80,17 @@ const authSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error?.message;
+    });
+    builder.addCase(createUser.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(createUser.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error?.message;
     });

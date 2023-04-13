@@ -2,11 +2,13 @@ import React from 'react'
 import { Program, ProgramsContainer, ProgramsWrapper } from '../../styles/ProgramSelection.styled'
 import { Button } from '../UI/Button'
 import { Icon } from '../UI/Icon'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const ProgramSelection = () => {
+  const navigate = useNavigate()
+
   const fu = () => {
-    console.log('hi')
+    navigate('/')
   }
   return (
     <ProgramsContainer>

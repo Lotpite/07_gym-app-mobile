@@ -20,10 +20,10 @@ export const Gym = () => {
     return newCount ? newCount.reps : 5
   }
 
-  const user = useSelector((state: RootState) => state.user)
+  const user = useSelector((state: RootState) => state.auth.user)
   const newTrain: ITraining = useSelector((state: RootState) => state.train)
   const dispatch = useAppDispatch();
-
+  console.log(user)
   const currentProgram = user.gym.trainings[user.gym.trainings.length - 1]
 
   const [isCooling, setIsCooling] = useState(false)
@@ -34,6 +34,7 @@ export const Gym = () => {
   const [activeExercise, setActiveExercise] = useState(0)
   const [count, setCount] = useState<number>(() => lazyCount(activeSet))
 
+  
   useEffect(() => {
     console.log(newTrain);
 
@@ -124,10 +125,6 @@ export const Gym = () => {
     setIsFinished(false)
     navigate('/home')
   }
-
-//! Need to realize function finnish for finnish button
-//! Need to realize function finnish for finnish button
-//! Need to realize function finnish for finnish button
 
   return (
     <GymContainer>

@@ -93,6 +93,7 @@ const initialState1 = {
 };
 const initialState: IUser = {
   email: "",
+  name: "",
   id: "",
   password: "",
   gym: {
@@ -106,6 +107,7 @@ const userSlice = createSlice({
   reducers: {},
 });
 
+console.log("hi");
 export const {} = userSlice.actions;
 
 export default userSlice.reducer;

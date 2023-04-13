@@ -4,16 +4,19 @@ import { Avatar, Level, HeaderWrapper, Rank, RankLabel, UserName } from '../../s
 import { Icon } from '../UI/Icon'
 
 interface IProfileHeader {
-  workoutsQty: number
+  workoutsQty: number;
+  profileName: string;
+  level?: number;
+  rank?: number;
 }
 
-export const ProfileHeader:FC<IProfileHeader> = ({workoutsQty}) => {
+export const ProfileHeader:FC<IProfileHeader> = ({workoutsQty, profileName, level, rank}) => {
   return (
     <HeaderWrapper>
           <Row>
             <Level>
               <Title>
-                  1
+                  {level ?? 1}
               </Title>
               <SubText>
                 level
@@ -25,7 +28,7 @@ export const ProfileHeader:FC<IProfileHeader> = ({workoutsQty}) => {
               <Rank>
                 <Icon name='rank'/>
                 <RankLabel>
-                  #1
+                  #{rank ?? 1}
                 </RankLabel>
               </Rank>
             </Avatar>
@@ -41,7 +44,7 @@ export const ProfileHeader:FC<IProfileHeader> = ({workoutsQty}) => {
           </Row>
           <UserName>
             <Title>
-              Andrew Arkhypov
+              {profileName}
             </Title>
           </UserName>
     </HeaderWrapper>

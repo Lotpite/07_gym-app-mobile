@@ -10,14 +10,21 @@ import { ProfileProgress } from '../Profile/ProfileProgress';
 
 export const Account: FC = () => {
   const user = useSelector((state: RootState) => state.auth.user)
-console.log(user)
+  const workoutsQty = user.gym.trainings.length;
+  
+  const isToday = (lastDate: number) => {
+    const now = new Date().toLocaleDateString()
+    const before = new Date(lastDate).toLocaleDateString()
+      return now === before
+  }
+
   return (
     <AccountContainer>
       {user.id !== ''
       ? <>
-          <ProfileHeader workoutsQty={user.gym.trainings.length}/>
+          <ProfileHeader workoutsQty={workoutsQty > 1 ? workoutsQty - 1 : 0} profileName={user.name}/>
           <ProfileProgress/>
-          <ProfileDaily todaysWorkout={user.gym.trainings[0]}/>
+          <ProfileDaily todaysWorkout={isToday(+user.gym.trainings[workoutsQty - 1]) ? user.gym.trainings[workoutsQty - 1] : user.gym.trainings[0]}/>
           <ProfileChart/>
           <ProfileNavigation/>
         </>

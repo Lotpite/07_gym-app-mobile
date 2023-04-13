@@ -9,13 +9,14 @@ interface IProfileDaily {
 }
 
 export const ProfileDaily:FC<IProfileDaily> = ({todaysWorkout}) => {
+
   return (
     <DailyWrapper>
-          {todaysWorkout.exercises.map(exercise => {
+          {todaysWorkout?.exercises.map(exercise => {
             return (
               <DailyState key={exercise.id}>
-                <ProgressCircle progressValue={exercise.total} iconName={exercise.id}/>
-                <Text>{exercise.total}%</Text>
+                <ProgressCircle progressValue={exercise.total ?? 0} iconName={exercise?.id}/>
+                <Text>{exercise.total ?? 0}%</Text>
               </DailyState>
             )
           })}
