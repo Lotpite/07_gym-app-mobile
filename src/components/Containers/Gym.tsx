@@ -14,6 +14,7 @@ import { Button } from '../UI/Button'
 export const Gym = () => {
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const lazyCount = (activeSet: number) => { 
     let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
@@ -22,23 +23,22 @@ export const Gym = () => {
 
   const user = useSelector((state: RootState) => state.auth.user)
   const newTrain: ITraining = useSelector((state: RootState) => state.train)
-  const dispatch = useAppDispatch();
-  console.log(user)
   const currentProgram = user.gym.trainings[user.gym.trainings.length - 1]
 
   const [isCooling, setIsCooling] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
   const [disable, setDisable] = useState(false);
 
-  const [activeSet, setActiveSet] = useState(1)
-  const [activeExercise, setActiveExercise] = useState(0)
+  const [activeSet, setActiveSet] = useState(5)
+  const [activeExercise, setActiveExercise] = useState(2)
   const [count, setCount] = useState<number>(() => lazyCount(activeSet))
 
-  
-  useEffect(() => {
-    console.log(newTrain);
+  const [trenirovka, setTrenirovka] = useState(currentProgram)
 
-  }, [count, activeSet, isFinished, newTrain])
+  useEffect(() => {
+    console.log(trenirovka);
+    console.log(user)
+  }, [count,trenirovka, activeSet, isFinished, newTrain])
 
   const setReps = (activeSet: number) => {
     let newCount = currentProgram.exercises[activeExercise].sets.find( item => item.order === activeSet)
@@ -47,13 +47,15 @@ export const Gym = () => {
 
   const addExercise = () => {
     let currentExercise = newTrain.exercises.find(item => item.id === currentProgram.exercises[activeExercise].id)
-    
+
     if(currentExercise) {
       dispatch(addSetToExs({
         exsId: activeExercise, 
         order: activeSet, 
         reps: count,
       }))
+
+      
     } else {
       let newExercise = {
         id: currentProgram.exercises[activeExercise].id,
@@ -66,6 +68,31 @@ export const Gym = () => {
       // newTrain.exercises.push(newExercise)
       dispatch(addExs(newExercise))
     }
+  }
+
+  const updateTrain = () => {
+    const newProg = {
+      ...trenirovka,
+      id: activeExercise === 2 ? new Date().toLocaleDateString() : trenirovka.id,
+      exercises: trenirovka.exercises.map(exs => {
+        if(exs.id === trenirovka.exercises[activeExercise].id) {
+          return {
+            ...exs,
+            sets: exs.sets.map(set => {
+              if(set.order === activeSet) {
+                return {
+                  ...set,
+                  reps: count
+                }
+              }
+              return set
+            })
+          }
+        }
+        return exs
+      })
+    }
+    setTrenirovka(newProg)
   }
 
   const done = () => {
@@ -94,6 +121,7 @@ export const Gym = () => {
     }
 
     addExercise()
+    updateTrain()
     console.log('done');
   }
 
