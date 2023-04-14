@@ -1,14 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import trainReducer from "./slices/train/train.slice";
 // import usersReducer from "./slices/users/users.slice.";
-import userReducer from "./slices/user/user.slice";
 import authReducer from "./slices/auth/auth";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    user: userReducer,
-    train: trainReducer,
   },
 });
 

@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { IUser } from "../../../models/IUser";
+import { ITraining } from "../../../models/IGym";
 
 interface AuthState {
   user: IUser;
@@ -17,6 +18,11 @@ interface RegistrationCredentials {
   name: string;
   email: string;
   password: string;
+}
+
+interface addTrainProps {
+  email: string;
+  newTrain: ITraining;
 }
 
 export const fetchUser = createAsyncThunk<IUser, LoginCredentials>(
@@ -53,6 +59,23 @@ export const createUser = createAsyncThunk<IUser, RegistrationCredentials>(
   }
 );
 
+export const addTrain = createAsyncThunk<string, addTrainProps>(
+  "auth/addTrain",
+  async ({ email, newTrain }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/addTrain`,
+        { email, newTrain }
+      );
+      return response.data;
+    } catch (error: any) {
+      return error.message
+        ? rejectWithValue(error.message)
+        : rejectWithValue({ message: "Undefined error occurs" });
+    }
+  }
+);
+
 const initialState: AuthState = {
   user: {
     email: "",
@@ -70,7 +93,11 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUser: (state, action: PayloadAction<ITraining>) => {
+      state.user.gym.trainings.push(action.payload);
+    },
+  },
   extraReducers(builder) {
     builder.addCase(fetchUser.pending, (state) => {
       state.loading = true;
@@ -97,5 +124,5 @@ const authSlice = createSlice({
   },
 });
 
-// export const {} = authSlice.actions;
+export const { updateUser } = authSlice.actions;
 export default authSlice.reducer;

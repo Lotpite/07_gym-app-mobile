@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { AccountContainer, PleaseLogin } from '../../styles/Account.styled';
@@ -11,11 +11,16 @@ import { ProfileProgress } from '../Profile/ProfileProgress';
 export const Account: FC = () => {
   const user = useSelector((state: RootState) => state.auth.user)
   const workoutsQty = user.gym.trainings.length;
+  const [disabled, setDisabled] = useState(false)
   
-  const isToday = (lastDate: number) => {
+  useEffect(() => {
+    isToday(user.gym.trainings[workoutsQty - 1].id)
+  }, [disabled])
+
+  const isToday = (lastDate: string) => {
     const now = new Date().toLocaleDateString()
-    const before = new Date(lastDate).toLocaleDateString()
-      return now === before
+    const before = lastDate
+    now === before ? setDisabled(true) : setDisabled(false)
   }
 
   return (
@@ -24,9 +29,9 @@ export const Account: FC = () => {
       ? <>
           <ProfileHeader workoutsQty={workoutsQty > 1 ? workoutsQty - 1 : 0} profileName={user.name}/>
           <ProfileProgress/>
-          <ProfileDaily todaysWorkout={isToday(+user.gym.trainings[workoutsQty - 1]) ? user.gym.trainings[workoutsQty - 1] : user.gym.trainings[0]}/>
+          <ProfileDaily todaysWorkout={disabled ? user.gym.trainings[workoutsQty - 1] : user.gym.trainings[0]}/>
           <ProfileChart/>
-          <ProfileNavigation/>
+          <ProfileNavigation disabled={disabled}/>
         </>
       : <PleaseLogin>Please login</PleaseLogin>}
     </AccountContainer>

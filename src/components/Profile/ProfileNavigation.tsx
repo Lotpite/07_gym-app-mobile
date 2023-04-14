@@ -1,10 +1,14 @@
-import React from 'react'
+import React, {FC} from 'react'
 import { Row } from '../../styles/Other.styled'
 import { NavigationWrapper, SettingsButton, StartButton } from '../../styles/ProfileNavigation.styled'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../UI/Button'
 
-export const ProfileNavigation = () => {
+interface IProfileNavigation {
+  disabled: boolean
+}
+
+export const ProfileNavigation:FC<IProfileNavigation> = ({disabled}) => {
   const navigate = useNavigate()
   const start = () => {
     navigate('/programs')
@@ -16,7 +20,7 @@ export const ProfileNavigation = () => {
         {/* <Button text='home' func={start}/> */}
 
         {/* <StartButton>Start</StartButton> */}
-        <Button text='Start' func={start}/>
+        <Button text={disabled ? '' : 'Start'} isDisabled={disabled} func={start}/>
         </Row>
     </NavigationWrapper>
   )
