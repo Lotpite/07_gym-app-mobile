@@ -96,6 +96,12 @@ const authSlice = createSlice({
   reducers: {
     updateUser: (state, action: PayloadAction<ITraining>) => {
       state.user.gym.trainings.push(action.payload);
+
+      debugger;
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    setUserFromLocalStorage: (state, action: PayloadAction<IUser>) => {
+      state.user = action.payload;
     },
   },
   extraReducers(builder) {
@@ -105,6 +111,7 @@ const authSlice = createSlice({
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.user = action.payload;
       state.loading = false;
+      localStorage.setItem("user", JSON.stringify(action.payload));
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
       state.loading = false;
@@ -116,6 +123,7 @@ const authSlice = createSlice({
     builder.addCase(createUser.fulfilled, (state, action) => {
       state.user = action.payload;
       state.loading = false;
+      localStorage.setItem("user", JSON.stringify(action.payload));
     });
     builder.addCase(createUser.rejected, (state, action) => {
       state.loading = false;
@@ -124,5 +132,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { updateUser } = authSlice.actions;
+export const { updateUser, setUserFromLocalStorage } = authSlice.actions;
 export default authSlice.reducer;

@@ -24,9 +24,6 @@ export const Login = () => {
     setPassword('')
     setPassword2('')
   }
-
-
-  //! SOLID or NOT SOLID ?
   
   const logIn = () => {
     dispatch(fetchUser({email, password}))

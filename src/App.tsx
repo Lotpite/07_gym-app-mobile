@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Account } from './components/Containers/Account';
 import { Gym } from './components/Containers/Gym';
 import { ProgramDescription } from './components/Program/ProgramDescription';
@@ -9,11 +9,25 @@ import { AppContainer } from './styles/App.styled';
 import { Login } from './components/Auth/Login';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/store';
+import { setUserFromLocalStorage } from './store/slices/auth/auth';
+import { useAppDispatch } from './hooks/redux';
 
 const App = () => {
 
-  const {user} = useSelector((state: RootState) => state.auth)
-  console.log(user)
+  const dispatch = useAppDispatch();
+  const user =useSelector((state: RootState) => state.auth.user)
+
+  useEffect(() => {
+   getUser()
+  }, [])
+
+  const getUser = () => {
+    let candidate = JSON.parse(localStorage.getItem('user') || '{}')
+    if(Object.keys(candidate).length > 0) {
+      console.log(candidate)
+      dispatch(setUserFromLocalStorage(candidate))
+    }
+  }
   return (
     <AppContainer>
       <GlobalStyle/>
