@@ -30,7 +30,7 @@ export const fetchUser = createAsyncThunk<IUser, LoginCredentials>(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/login`,
+        `${process.env.REACT_APP_SERVER_URL}/login/`,
         { email, password }
       );
       return response.data;

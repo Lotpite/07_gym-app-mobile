@@ -36,7 +36,7 @@ export const Login = () => {
       dispatch(createUser({name, email, password}))
       setRegistration(false)
     } else {
-       alert('Password does not match')
+       alert('Error. Password does not match')
     }
   }
 
