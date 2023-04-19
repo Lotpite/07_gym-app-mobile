@@ -1,10 +1,41 @@
 import { ChartGraph, ChartNavigation, ChartNavigationItem, GraphItem, Scale, Slash } from '../../styles/ProfileChart.styled'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ChartWrapper } from '../../styles/ProfileChart.styled'
 import { SubText, Text } from '../../styles/Other.styled'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
 
 export const ProfileChart = () => {
-  let maxKal: number;
+  const user = useSelector((state: RootState) => state.auth.user)
+
+  const getDay = (date: string) => {
+    const newDate = new Date(date)
+    const options: Intl.DateTimeFormatOptions = { weekday: 'short'};
+    const dayName = newDate.toLocaleDateString('en-US', options)
+    return dayName
+  }
+
+  const days = user.gym.trainings.map(item => {
+    let totalRepeats = 0;
+    item.exercises.forEach(exs => totalRepeats += exs.total)
+    
+    return {
+      id: getDay(item.id),
+      total: totalRepeats
+    }
+  })
+
+  const genChart = (arr: number[]) => {
+    if(arr.length > 7) {
+      return arr.slice(arr.length - 7, arr.length)
+    } else {
+      return arr
+    }
+  }
+
+  useEffect(() => {
+    console.log(genChart([1,2,3,4,5,6,7,8,9,10]))
+  }, [])
 
   return (
     <ChartWrapper>
@@ -33,30 +64,7 @@ export const ProfileChart = () => {
           <Scale percent={90}/>
           <SubText>Sun</SubText>
         </GraphItem>
-        <GraphItem>
-          <Scale percent={90}/>
-          <SubText>Mon</SubText>
-        </GraphItem>
-        <GraphItem>
-          <Scale percent={40}/>
-          <SubText>Tue</SubText>
-        </GraphItem>
-        <GraphItem>
-          <Scale percent={90}/>
-          <SubText>Wed</SubText>
-        </GraphItem>
-        <GraphItem>
-          <Scale percent={5}/>
-          <SubText>Thu</SubText>
-        </GraphItem>
-        <GraphItem>
-          <Scale percent={98}/>
-          <SubText>Fri</SubText>
-        </GraphItem>
-        <GraphItem>
-          <Scale percent={100}/>
-          <SubText>Sat</SubText>
-        </GraphItem>
+        
       </ChartGraph>
     </ChartWrapper>
     

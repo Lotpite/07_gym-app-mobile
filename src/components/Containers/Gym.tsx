@@ -34,8 +34,6 @@ export const Gym = () => {
   const [newTrain, setNewTrain] = useState(currentProgram)
 
   useEffect(() => {
-    console.log(newTrain);
-    console.log(user)
   }, [count, activeSet, isFinished, newTrain])
 
   const setReps = (activeSet: number) => {
