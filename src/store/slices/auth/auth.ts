@@ -52,7 +52,7 @@ export const createUser = createAsyncThunk<IUser, RegistrationCredentials>(
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/registration`,
+        `${process.env.REACT_APP_SERVER_URL}registration`,
         { name, email, password }
       );
       return response.data;
@@ -69,7 +69,7 @@ export const addTrain = createAsyncThunk<string, addTrainProps>(
   async ({ email, newTrain }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/addTrain`,
+        `${process.env.REACT_APP_SERVER_URL}addTrain`,
         { email, newTrain }
       );
       return response.data;
