@@ -6,9 +6,10 @@ import { GymContainer, GymContent } from '../../styles/Gym.styled'
 import { Cooling } from '../Gym/Cooling'
 import { Finish } from '../Gym/Finish'
 import { NewSet } from '../Gym/Set'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Button } from '../UI/Button'
 import { addTrain, updateUser } from '../../store/slices/auth/auth'
+import { checkIsToday } from '../../helpers/checkDate'
 
 export const Gym = () => {
 
@@ -127,26 +128,30 @@ export const Gym = () => {
 
   return (
     <GymContainer>
-        <GymContent>
-          {
-            isFinished 
-            ? <Finish iconName='finish'
-                      trainingsCount={user.gym.trainings.length}/>
-            : isCooling 
-            ? <Cooling iconName='cooling' func={activateButton}/>
-            : <NewSet exerciseName={currentProgram.exercises[activeExercise].id}
-                      exercisesList={currentProgram.exercises[activeExercise].sets}
-                      repsCount={count}
-                      activeSet={activeSet}
-                      func={change}
-            />
-        
-          }
+        {
+          (!checkIsToday(currentProgram.id))
+            ? <GymContent>
+              {
+                isFinished 
+                ? <Finish iconName='finish'
+                          trainingsCount={user.gym.trainings.length}/>
+                : isCooling 
+                ? <Cooling iconName='cooling' func={activateButton}/>
+                : <NewSet exerciseName={currentProgram.exercises[activeExercise].id}
+                          exercisesList={currentProgram.exercises[activeExercise].sets}
+                          repsCount={count}
+                          activeSet={activeSet}
+                          func={change}
+                          
+              />
+              } 
 
-          <Button text={isFinished ? 'Finish' : isCooling ? 'Continue' : 'Done'}
-                  isDisabled={disable}
-                  func={isFinished ? finish : isCooling ? disableCooling : done}/>
-        </GymContent>
+            <Button text={isFinished ? 'Finish' : isCooling ? 'Continue' : 'Done'}
+                    isDisabled={disable}
+                    func={isFinished ? finish : isCooling ? disableCooling : done}/>
+          </GymContent>
+            : <Navigate to='/'/>
+        }
     </GymContainer>
   )
 }

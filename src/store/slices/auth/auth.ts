@@ -102,7 +102,6 @@ const authSlice = createSlice({
     updateUser: (state, action: PayloadAction<ITraining>) => {
       state.user.gym.trainings.push(action.payload);
 
-      debugger;
       localStorage.setItem("user", JSON.stringify(state.user));
     },
     setUserFromLocalStorage: (state, action: PayloadAction<IUser>) => {

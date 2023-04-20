@@ -1,7 +1,9 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Changer, Count, Exercise, ExerciseImg, Repeater, Set, Sets } from '../../styles/Gym.styled'
 import { Text, Title } from '../../styles/Other.styled'
 import { Icon } from '../UI/Icon'
+import { ITraining } from '../../models/IGym';
+import { redirect } from 'react-router-dom';
 
 interface ISetProps {
   exerciseName: string,
@@ -11,11 +13,11 @@ interface ISetProps {
         }[],
   repsCount: number,
   activeSet: number,
-  func: (args: number) => void
+  func: (args: number) => void,
 }
 
-
 export const NewSet:FC<ISetProps> = ({exerciseName, exercisesList,repsCount,activeSet,func}) => {
+
   return (
     <>
         <Exercise>
