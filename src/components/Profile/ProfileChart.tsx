@@ -15,26 +15,43 @@ export const ProfileChart = () => {
     return dayName
   }
 
-  const days = user.gym.trainings.map(item => {
+  const trainingList = user.gym.trainings.length > 7 ? user.gym.trainings.slice(user.gym.trainings.length - 7) : user.gym.trainings;
+
+  const days = trainingList.map(item => {
     let totalRepeats = 0;
     item.exercises.forEach(exs => totalRepeats += exs.total)
     
     return {
-      id: getDay(item.id),
+      id: item.id,
+      name: getDay(item.id),
       total: totalRepeats
     }
   })
 
-  const genChart = (arr: number[]) => {
-    if(arr.length > 7) {
-      return arr.slice(arr.length - 7, arr.length)
-    } else {
-      return arr
-    }
+  const getScaledItem = (arr: typeof days) => {
+    let max = arr[0].total;
+
+    arr.forEach((item,i) => {
+      if(item.total > max) {
+        max = item.total
+      }
+    })
+    const multiplier = 100 / max
+    const scaledItems = arr.map(item => {
+     return {
+      id: item.id,
+      name: item.name,
+      total: Math.floor(item.total * multiplier)
+     }
+    })
+    debugger
+    return scaledItems
   }
 
+  const scaledDays = getScaledItem(days)
+
   useEffect(() => {
-    console.log(genChart([1,2,3,4,5,6,7,8,9,10]))
+    console.log(trainingList)
   }, [])
 
   return (
@@ -60,10 +77,14 @@ export const ProfileChart = () => {
       </ChartNavigation>
 
       <ChartGraph>
-        <GraphItem>
-          <Scale percent={90}/>
-          <SubText>Sun</SubText>
-        </GraphItem>
+        {scaledDays.map(day => {
+          return (
+            <GraphItem key={day.id}>
+              <Scale percent={day.total}/>
+              <SubText>{day.name}</SubText>
+          </GraphItem>
+          )
+        })}
         
       </ChartGraph>
     </ChartWrapper>

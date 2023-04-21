@@ -10,7 +10,7 @@ export const ChartWrapper = styled(Col)`
   height: 190px;
   /* background-color: grey; */
   justify-content: space-between;
-  gap: 20px;
+  gap: 30px;
 `;
 
 export const ChartNavigation = styled(Row)`
@@ -37,12 +37,14 @@ export const Slash = styled.div`
 export const ChartGraph = styled(Row)`
   height: 150px;
   width: 100%;
-  border: 1px solid black;
+  justify-content: flex-start;
   align-items: flex-end;
+  gap: 10px;
 `;
 
 export const GraphItem = styled(Col)`
   height: 100%;
+  width: 14%;
   justify-content: flex-end;
   gap: 5px;
 `;
