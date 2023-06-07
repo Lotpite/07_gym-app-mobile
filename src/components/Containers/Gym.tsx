@@ -28,8 +28,8 @@ export const Gym = () => {
   const [isFinished, setIsFinished] = useState(false)
   const [disable, setDisable] = useState(false);
 
-  const [activeSet, setActiveSet] = useState(5)
-  const [activeExercise, setActiveExercise] = useState(2)
+  const [activeSet, setActiveSet] = useState(1)
+  const [activeExercise, setActiveExercise] = useState(0)
   const [count, setCount] = useState<number>(() => lazyCount(activeSet))
 
   const [newTrain, setNewTrain] = useState(currentProgram)
